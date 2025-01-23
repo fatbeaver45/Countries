@@ -1,3 +1,10 @@
+
+
+//Milan Chandra
+//1/13/2025
+//Game that quizzes the user on the capitals of different countries.
+
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -17,6 +24,7 @@ public class Main
   private ImageIcon img;
   private JLabel imageLabel;
   private JLabel outputLabel;
+  private JTextField input;
   
   public static void main(String[] args) {
     // Create the GUI
@@ -40,9 +48,12 @@ public class Main
     // Write a for loop that goes through the countryArray.
     // for(int i ....) {
     // Do the following inside the loop
+    for (int ant = 0; ant < countryArray.length; ant++){
       String input = scan.nextLine();
       String[] data = input.split(",");
       System.out.println("Read in " + data[0]);
+      countryArray[ant] = new Country(data[0], data[1], data[2], data[3]);
+    }
       // inside the loop, create a new Country using your constructor with 3 arguments and pass in data[0], data[1], data[2], data[3] as arguments.
      // inside the loop, set countryArray[i] to the created Country object
      
@@ -55,7 +66,7 @@ public class Main
     // Get the country at index from countryArray
     
     // Use its get method to get the its image file name and save it into imagefile variable below instead of worldmap.jpg.
-    String imagefile = "worldmap.jpg";
+    String imagefile = countryArray[index].getImg();
     // Use the following code to create an new Image Icon and put it into the GUI
     img = new ImageIcon("/workspaces/Countries/workspace/"+imagefile);
     imageLabel.setIcon(img);
@@ -64,29 +75,45 @@ public class Main
   /* nextButton should increment index. If the index is greater than 9, reset it back to 0. Clear the outputLabel to empty string using setText, and call showCountry();*/
   public void nextButtonClick()
   {
+    outputLabel.setText("");
+    index++;
+    if (index > 9){
+      index = 0;
+    }
     
+    outputLabel.setText("What capital is this "+index);
+    showCountry();
   }
   
   /* reviewButton should get the country at index from the countryArray, call its toString() method and save the result, print it out with System.out.println and as an argument to outputLabel.setText( text to print out ); */
   public void reviewButtonClick()
   {
-     
-  }
+    String currentCountry = countryArray[index].toString();
+    outputLabel.setText(currentCountry);
+    }
 
   /* quizButton should clear the outputLabel (outputLabel.setText to empty string), get the country at index from countryArray, print out a question about it like What country is this? and/or What's this country's capital?. Get the user's answer using scan.nextLine() and check if it is equal to the country's data using its get methods and print out correct or incorrect.
   */
   public void quizButtonClick()
   {
-    Scanner scan = new Scanner(System.in); 
+    outputLabel.setText("");
+    String currentCapital = countryArray[index].getCapital();
+    System.out.println("What Capital is this?");
+    String response = input.getText();
+      if(response.equals(currentCapital)){
+        outputLabel.setText("Correct");
+      }
+      else{
+        outputLabel.setText("Incorrect");
+      }
+    }
     
-    
-    
-  }
 
 
 
 
-  /* Do NOT change anything below here */
+
+
   /* The Main() constructor is finished and will construct the GUI */
 public Main() {
     jFrame.setLayout(new FlowLayout());
@@ -108,6 +135,11 @@ public Main() {
         outputLabel = new JLabel();
         jFrame.add(imageLabel);
         jFrame.add(outputLabel);
+
+        //add npuy
+        input = new JTextField(20);
+        jFrame.add(input);
+
         jFrame.setVisible(true);
         // add event listener for button click
         reviewButton.addActionListener(new ActionListener() {
